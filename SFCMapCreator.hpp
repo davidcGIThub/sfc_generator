@@ -19,16 +19,18 @@ class SFCMapCreator
     public:
         SFCMapCreator(std::pair<float,float> x_bounds,
                       std::pair<float,float> y_bounds,
-                      std::list<Obstacle> obstacle_list);
-        std::list<Sfc> createSFCMap();
+                      std::vector<Obstacle::Box> obstacle_list);
+        std::vector<Sfc> createSFCMap();
     
     private:
         std::pair<float,float> _x_bounds;
         std::pair<float,float> _y_bounds;
-        std::list<Obstacle> _obstacle_list;
-        std::list<Obstacle> _obstacle_list;
-        std::list<Obstacle> _obstacle_list;
-        void createSFCsForObstacle(Obstacle obst);
+        std::vector<Obstacle::Box> _obstacle_list;
+        std::vector<unsigned int> _left_face_orderd_indices;
+        std::vector<unsigned int> _right_face_orderd_indices;
+        std::vector<unsigned int> _top_face_orderd_indices;
+        std::vector<unsigned int> _bottom_face_orderd_indices;
+        void createSFCsForObstacle(Obstacle::Box obst);
         void createSFC(std::pair<float,float> &start_coordinates, 
                         std::pair<float,float> &start_obstacle_direction);
         void SFCMapCreator::OrganizeObstacles();
