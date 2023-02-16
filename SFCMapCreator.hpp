@@ -25,11 +25,15 @@ bool operator<(const SFC &a,const SFC &b)
 class SFCMapCreator
 {
     public:
-        SFCMapCreator(float min_spacing,
-                      std::pair<float,float> x_bounds,
-                      std::pair<float,float> y_bounds,
-                      std::vector<Obstacle::Box> obstacle_list);
-        std::set<SFC> getSFCMap();
+        SFCMapCreator(float min_spacing, float x_max,
+                      float y_max, float x_min, float y_min,
+                      unsigned int num_obstacles, float obstacle_array[]);
+        SFCMapCreator(float min_spacing, float x_max,
+                      float y_max, float x_min, float y_min,
+                      unsigned int num_obstacles, std::vector<Obstacle::Box> obstacle_list);
+        unsigned int getNumberOfSFCs();
+        float* getSFCArray();
+        void printSFCs();
     
     private:
         float _min_spacing;
@@ -47,37 +51,18 @@ class SFCMapCreator
         void createRightSFC(unsigned int &ordered_index);
         void createLeftSFC(unsigned int &ordered_index);
         void createTopSFC(unsigned int &ordered_index);
+        std::vector<Obstacle::Box> convertObstacleArrayToVector(float obstacle_array[]);
+};
+
+extern "C"
+{
+    SFCMapCreator* SFCMapCreator_new(float min_spacing, float x_max,
+                      float y_max, float x_min, float y_min,
+                      unsigned int num_obstacles, float obstacle_array[]) 
+                    {return new SFCMapCreator(min_spacing, x_max,
+                      y_max, x_min, y_min, num_obstacles, obstacle_array);}
+    unsigned int getNumberOfSFCs_new(SFCMapCreator* creator) {creator->getNumberOfSFCs();}
+    float* getSFCs_new(SFCMapCreator* creator) {creator->getSFCs();}
+    void printSFCs_new(SFCMapCreator* creator) {creator->printSFCs();}
 }
 #endif
-
-
-
-// #include <iostream>
-// #include <map>
-// // #include <pair>
-
-// int main()
-// {
-//   // Create a map of strings to integers
-//   std::map<std::pair<int,int>, int> map;
- 
-//   // Insert some values into the map
-//   std::pair<int,int> pair1(10,11);
-//   std::pair<int,int> pair2(11,21);
-//   std::pair<int,int> pair3(10,11);
-//   map[pair1] = 1;
-//   map[pair2] = 2;
-//   map[pair3] = 3;
- 
-//   // Get an iterator pointing to the first element in the map
-//   std::map<std::pair<int,int>, int>::iterator it = map.begin();
- 
-//   // Iterate through the map and print the elements
-//   while (it != map.end())
-//   {
-//     std::cout << "Key: " << it->first.first << it->first.second << ", Value: " << it->second << std::endl;
-//     ++it;
-//   }
- 
-//   return 0;
-// }
