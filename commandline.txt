@@ -1,0 +1,1 @@
+g++ -fPIC -shared -o libsfc.so SFCMapCreator.cpp Obstacle.cpp
